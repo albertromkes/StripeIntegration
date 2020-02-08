@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>StripeIntegration</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = window.Stripe('pk_test_not_gonna_tell_you');
+
+        window.stripeCheckout = function (callBackInstance, amount, sessionId) {
+            stripe.redirectToCheckout({
+                sessionId: sessionId
+            }).then(function (result) {
+
+            })
+        };
+    </script>
+</head>
+
+<body>
+    <app>Loading...</app>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_content/Blazor.Fluxor/index.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>

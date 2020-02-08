@@ -1,0 +1,46 @@
+﻿@page "/startpayment"
+@inherits Blazor.Fluxor.Components.FluxorComponent
+@inject IJSRuntime JSRuntime
+@using Blazor.Fluxor
+@using StripeIntegration.Client.Store
+@inject IDispatcher Dispatcher
+@inject IState<PaymentState> PaymentState
+
+<h3>StartPayment</h3>
+
+@if (PaymentState.Value.IsLoading)
+{
+    <p>Loading...</p>
+}
+
+@if (PaymentState.Value.ErrorMessage != null)
+{
+    <p>Errors: @PaymentState.Value.ErrorMessage</p>
+}
+
+@if (PaymentState.Value.Token != null)
+{
+    <p>Token: @PaymentState.Value.Token</p>
+
+
+}
+
+<button @onclick="StartPaymentClick">Start payment!</button>
+
+@code {
+    private async Task StartPaymentClick()
+    {
+        Dispatcher.Dispatch(new InitiatePaymentAction());
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {        
+        if (!firstRender)
+        {            
+            if (PaymentState.Value.Token != null)
+            {
+                await JSRuntime.InvokeAsync<string>("stripeCheckout", null, 1, PaymentState.Value.Token);
+            }
+        }
+    }
+}
